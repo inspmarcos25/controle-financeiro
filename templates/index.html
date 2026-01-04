@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1>📊 Dashboard</h1>
+        <div class="header-icons">
+            <span class="month-icon" title="Selecionar Mês">📅</span>
+            <input type="month" id="month-picker" class="month-picker">
+            <a href="{{ url_for('add_transaction') }}" class="add-btn" title="Adicionar Transação">+</a>
+        </div>
+    </header>
+    <div class="main-content">
+    <div class="summary">
+        <div class="card income-card">
+            <h2>💰 Receitas Totais</h2>
+            <p>R$ {{ "%.2f"|format(income) }}</p>
+        </div>
+        <div class="card expense-card">
+            <h2>💸 Despesas Totais</h2>
+            <p>R$ {{ "%.2f"|format(expense) }}</p>
+        </div>
+        <div class="card balance-card">
+            <h2>⚖️ Saldo</h2>
+            <p>R$ {{ "%.2f"|format(balance) }}</p>
+        </div>
+    </div>
+    <div class="dashboard-content">
+        <section class="expenses-section">
+            <h2>📈 Despesas por Categoria</h2>
+            <div class="expenses-list">
+                {% for cat in expenses_by_cat %}
+                <div class="expense-item">
+                    <span class="category">{{ cat.name }}</span>
+                    <span class="amount">R$ {{ "%.2f"|format(cat.total) }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        <section class="chart-section">
+            <h2>📊 Gráfico de Despesas</h2>
+            <canvas id="expenseChart"></canvas>
+        </section>
+    </div>
+
+    <script>
+        // Selecionar mês
+        const monthIcon = document.querySelector('.month-icon');
+        const monthPicker = document.getElementById('month-picker');
+        monthIcon.addEventListener('click', () => {
+            monthPicker.style.display = monthPicker.style.display === 'none' || monthPicker.style.display === '' ? 'block' : 'none';
+        });
+        monthPicker.addEventListener('change', (e) => {
+            const month = e.target.value;
+            window.location.search = month ? `?month=${month}` : '';
+        });
+
+        fetch('/api/chart_data' + (window.location.search || ''))
+        .then(response => response.json())
+        .then(data => {
+            const ctx = document.getElementById('expenseChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: 'Despesas',
+                        data: data.values,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.8)',
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 206, 86, 0.8)',
+                            'rgba(75, 192, 192, 0.8)',
+                            'rgba(153, 102, 255, 0.8)',
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                        ],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Transação - Controle Financeiro</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>➕ Adicionar Transação</h1>
+    </header>
+    <form method="post">
+        <div class="form-section">
+            <label for="type">Tipo:</label>
+            <select name="type" id="type" required>
+                <option value="income">💰 Receita</option>
+                <option value="expense">💸 Despesa</option>
+            </select>
+        </div>
+
+        <div class="form-section">
+            <label for="amount">Valor:</label>
+            <input type="number" step="0.01" name="amount" id="amount" required placeholder="0.00">
+        </div>
+
+        <div class="form-section">
+            <label for="category">Categoria:</label>
+            <select name="category" id="category" required>
+                {% for cat in categories %}
+                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-section">
+            <label for="date">Data:</label>
+            <input type="date" name="date" id="date" required>
+        </div>
+
+        <div class="form-section">
+            <label for="description">Descrição:</label>
+            <input type="text" name="description" id="description" placeholder="Opcional">
+        </div>
+
+        <div class="form-section">
+            <label for="recurrent">
+                <input type="checkbox" id="recurrent" name="recurrent"> Recorrente
+            </label>
+        </div>
+
+        <div id="recurrent-options" class="form-section" style="display:none;">
+            <label for="frequency">Frequência:</label>
+            <select id="frequency" name="frequency">
+                <option value="daily">Diária</option>
+                <option value="weekly">Semanal</option>
+                <option value="monthly">Mensal</option>
+            </select>
+
+            <label for="repetitions">Número de repetições:</label>
+            <input type="number" id="repetitions" name="repetitions" min="1" placeholder="1">
+        </div>
+
+        <button type="submit">Salvar Transação</button>
+    </form>
+    <div class="actions">
+        <a href="{{ url_for('dashboard') }}" class="btn">⬅️ Voltar ao Dashboard</a>
+    <script>
+        document.getElementById('recurrent').addEventListener('change', function() {
+            const options = document.getElementById('recurrent-options');
+            options.style.display = this.checked ? 'block' : 'none';
+        });
+    </script>
