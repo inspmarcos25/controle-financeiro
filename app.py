@@ -1,9 +1,12 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 import sqlite3
 from datetime import datetime, timedelta
+import os
 
 app = Flask(__name__)
 DB_NAME = 'finance.db'
+app.config['ENV'] = os.getenv('FLASK_ENV', 'production')
+app.config['DEBUG'] = os.getenv('FLASK_DEBUG', False)
 
 def get_db():
     conn = sqlite3.connect(DB_NAME)
@@ -138,4 +141,6 @@ def chart_data():
     return jsonify({'labels': labels, 'values': values})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
+    port = int(os.getenv('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=debug_mode)
