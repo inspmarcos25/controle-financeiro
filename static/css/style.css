@@ -140,9 +140,9 @@ h1 {
 }
 
 .expenses-section, .chart-section {
-    margin: 20px;
+    margin: 23px;
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
-    padding: 25px;
+    padding: 29px;
     border-radius: 15px;
     box-shadow: 0 8px 16px rgba(0,0,0,0.12);
     border: 1px solid rgba(0,0,0,0.05);
@@ -391,8 +391,8 @@ button:hover {
 
 /* Latest Transactions Section */
 .latest-transactions-section {
-    margin: 20px;
-    padding: 20px;
+    margin: 23px;
+    padding: 23px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -400,7 +400,7 @@ button:hover {
 
 @media (min-width: 769px) {
     .latest-transactions-section {
-        margin: 20px;
+        margin: 23px;
     }
 }
 
