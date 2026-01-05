@@ -147,6 +147,7 @@ h1 {
     box-shadow: 0 8px 16px rgba(0,0,0,0.12);
     border: 1px solid rgba(0,0,0,0.05);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 1;
 }
 
 .expenses-section:hover, .chart-section:hover {
@@ -155,8 +156,11 @@ h1 {
 }
 
 .dashboard-content {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 0 20px;
+}
     gap: 20px;
 }
 
@@ -388,11 +392,12 @@ button:hover {
 
 /* Latest Transactions Section */
 .latest-transactions-section {
-    margin-top: 40px;
+    margin-top: 20px;
     padding: 20px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    grid-column: 1 / -1;
 }
 
 .latest-transactions-section h2 {
