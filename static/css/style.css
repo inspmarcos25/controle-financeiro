@@ -93,7 +93,7 @@ h1 {
 }
 
 .dashboard-content {
-    flex: 1;
+    flex: 2;
 }
 
 .card {
@@ -139,9 +139,9 @@ h1 {
     text-align: right;
 }
 
-.expenses-section, .chart-section {
+.expenses-section, .chart-section, .latest-transactions-section {
     margin: 0 auto 20px auto;
-    width: 90%;
+    width: 85%;
     background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 90%);
     padding: 23px;
     border-radius: 10px;
@@ -150,7 +150,7 @@ h1 {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.expenses-section:hover, .chart-section:hover {
+.expenses-section:hover, .chart-section:hover, .latest-transactions-section:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 24px rgba(0,0,0,0.15);
 }
@@ -158,18 +158,14 @@ h1 {
 .dashboard-content {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
-    padding: 0 20px;
+    padding: 0;
 }
 
 @media (min-width: 769px) {
-    .dashboard-content {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-    }
-    .expenses-section, .chart-section {
-        flex: 1;
-        margin: 0;
+    .expenses-section, .chart-section, .latest-transactions-section {
+        width: 85%;
     }
 }
 
@@ -391,19 +387,12 @@ button:hover {
 
 /* Latest Transactions Section */
 .latest-transactions-section {
-    margin: 0 auto 20px auto;
-    width: 90%;
-    padding: 23px;
     background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 @media (min-width: 769px) {
-    .latest-transactions-section,
-    .expenses-section,
-    .chart-section {
-        width: 90%;
+    .expenses-section, .chart-section, .latest-transactions-section {
+        width: 85%;
     }
 }
 
@@ -422,31 +411,30 @@ button:hover {
 }
 
 .transaction-card {
-    background-color: #f8f9fa;
-    border-left: 4px solid #3498db;
-    padding: 10px 12px;
-    border-radius: 8px;
+    background-color: transparent;
+    border-left: none;
+    border-bottom: 1px solid #e8e8e8;
+    padding: 12px 0;
+    border-radius: 0;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    flex-direction: row;
     align-items: center;
-    transition: transform 0.2s, box-shadow 0.2s;
-    gap: 8px;
+    gap: 12px;
+    transition: background-color 0.2s;
 }
 
 .transaction-card:hover {
-    transform: translateX(5px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: #f8f9fa;
 }
 
 .transaction-card.income {
-    border-left-color: #27ae60;
-    background-color: #f0fdf4;
+    border-left: none;
+    background-color: transparent;
 }
 
 .transaction-card.expense {
-    border-left-color: #e74c3c;
-    background-color: #fef2f2;
+    border-left: none;
+    background-color: transparent;
 }
 
 .transaction-header {
@@ -457,84 +445,157 @@ button:hover {
 }
 
 .transaction-icon {
-    font-size: 1.3em;
-    min-width: 25px;
+    font-size: 1.4em;
+    min-width: 32px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    flex-shrink: 0;
+}
+
+.transaction-card.income .transaction-icon {
+    background-color: #e8f5e9;
+}
+
+.transaction-card.expense .transaction-icon {
+    background-color: #ffebee;
 }
 
 .transaction-info {
     flex: 1;
+    min-width: 0;
 }
 
 .transaction-info h3 {
-    margin: 0;
+    margin: 0 0 2px 0;
     font-size: 0.95em;
     color: #2c3e50;
     font-weight: 600;
 }
 
 .transaction-date {
-    margin: 2px 0 0 0;
-    font-size: 0.80em;
-    color: #7f8c8d;
+    margin: 0;
+    font-size: 0.8em;
+    color: #999;
+    display: inline;
 }
 
 .transaction-description {
-    margin: 2px 0 0 0;
+    margin: 0;
     font-size: 0.8em;
-    color: #95a5a6;
-    font-style: italic;
+    color: #999;
+    font-style: normal;
+    display: inline;
+}
+
+.transaction-description::before {
+    content: " • ";
 }
 
 .transaction-amount {
-    font-weight: bold;
+    font-weight: 700;
     font-size: 1em;
-    min-width: 100px;
     text-align: right;
-    margin: 0 10px;
+    margin-left: auto;
+    flex-shrink: 0;
+    min-width: 90px;
 }
 
 .transaction-card.income .transaction-amount {
-    color: #27ae60;
+    color: #00c853;
 }
 
 .transaction-card.expense .transaction-amount {
-    color: #e74c3c;
+    color: #f44336;
 }
 
 .transaction-actions {
     display: flex;
-    gap: 5px;
-    margin-left: 10px;
+    gap: 2px;
     flex-shrink: 0;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+}
+
+.transaction-card:hover .transaction-actions {
+    opacity: 1;
 }
 
 .btn-edit, .btn-delete {
     background: none;
     border: none;
-    font-size: 1.1em;
+    font-size: 1em;
     cursor: pointer;
-    padding: 4px 8px;
+    padding: 6px;
     border-radius: 4px;
-    transition: background-color 0.2s;
-    min-width: 32px;
+    transition: all 0.2s;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-edit {
-    background-color: rgba(52, 152, 219, 0.1);
-    color: #3498db;
+    background-color: transparent;
+    color: #666;
 }
 
 .btn-edit:hover {
-    background-color: rgba(52, 152, 219, 0.3);
+    background-color: rgba(52, 152, 219, 0.15);
+    color: #3498db;
 }
 
 .btn-delete {
-    background-color: rgba(231, 76, 60, 0.1);
-    color: #e74c3c;
+    background-color: transparent;
+    color: #666;
 }
 
 .btn-delete:hover {
-    background-color: rgba(231, 76, 60, 0.3);
+    background-color: rgba(231, 76, 60, 0.15);
+    color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+    .transaction-card {
+        padding: 10px 0;
+        gap: 8px;
+    }
+    
+    .transaction-header {
+        gap: 8px;
+    }
+    
+    .transaction-icon {
+        font-size: 1.2em;
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+    }
+    
+    .transaction-info h3 {
+        font-size: 0.9em;
+    }
+    
+    .transaction-date, .transaction-description {
+        font-size: 0.75em;
+    }
+    
+    .transaction-amount {
+        font-size: 0.95em;
+        min-width: 80px;
+    }
+    
+    .btn-edit, .btn-delete {
+        font-size: 0.9em;
+        width: 26px;
+        height: 26px;
+        padding: 4px;
+    }
 }
 
 /* Transaction Form */
