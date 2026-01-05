@@ -404,20 +404,21 @@ button:hover {
 
 .transactions-container {
     display: grid;
-    gap: 15px;
-    max-height: 500px;
+    gap: 10px;
+    max-height: 600px;
     overflow-y: auto;
 }
 
 .transaction-card {
     background-color: #f8f9fa;
     border-left: 4px solid #3498db;
-    padding: 15px;
+    padding: 10px 12px;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     transition: transform 0.2s, box-shadow 0.2s;
+    gap: 8px;
 }
 
 .transaction-card:hover {
@@ -438,13 +439,13 @@ button:hover {
 .transaction-header {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     flex: 1;
 }
 
 .transaction-icon {
-    font-size: 1.5em;
-    min-width: 30px;
+    font-size: 1.3em;
+    min-width: 25px;
 }
 
 .transaction-info {
@@ -453,28 +454,30 @@ button:hover {
 
 .transaction-info h3 {
     margin: 0;
-    font-size: 1em;
+    font-size: 0.95em;
     color: #2c3e50;
+    font-weight: 600;
 }
 
 .transaction-date {
-    margin: 5px 0 0 0;
-    font-size: 0.85em;
+    margin: 2px 0 0 0;
+    font-size: 0.80em;
     color: #7f8c8d;
 }
 
 .transaction-description {
-    margin: 5px 0 0 0;
-    font-size: 0.9em;
+    margin: 2px 0 0 0;
+    font-size: 0.8em;
     color: #95a5a6;
     font-style: italic;
 }
 
 .transaction-amount {
     font-weight: bold;
-    font-size: 1.1em;
-    min-width: 120px;
+    font-size: 1em;
+    min-width: 100px;
     text-align: right;
+    margin: 0 10px;
 }
 
 .transaction-card.income .transaction-amount {
@@ -487,18 +490,20 @@ button:hover {
 
 .transaction-actions {
     display: flex;
-    gap: 10px;
-    margin-left: 20px;
+    gap: 5px;
+    margin-left: 10px;
+    flex-shrink: 0;
 }
 
 .btn-edit, .btn-delete {
     background: none;
     border: none;
-    font-size: 1.2em;
+    font-size: 1.1em;
     cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 5px;
+    padding: 4px 8px;
+    border-radius: 4px;
     transition: background-color 0.2s;
+    min-width: 32px;
 }
 
 .btn-edit {
