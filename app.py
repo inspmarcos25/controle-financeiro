@@ -68,9 +68,20 @@ def dashboard():
             WHERE t.type='expense'
             GROUP BY c.name
         ''').fetchall()
+    
+    # Últimas 10 transações
+    latest_transactions = conn.execute('''
+        SELECT t.id, t.type, t.amount, c.name as category, t.date, t.description
+        FROM transactions t
+        LEFT JOIN categories c ON t.category_id = c.id
+        ORDER BY t.date DESC, t.id DESC
+        LIMIT 10
+    ''').fetchall()
+    
     balance = income - expense
     conn.close()
-    return render_template('index.html', income=income, expense=expense, balance=balance, expenses_by_cat=expenses_by_cat)
+    return render_template('index.html', income=income, expense=expense, balance=balance, 
+                         expenses_by_cat=expenses_by_cat, latest_transactions=latest_transactions)
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_transaction():
@@ -114,6 +125,42 @@ def add_transaction():
     categories = conn.execute('SELECT * FROM categories').fetchall()
     conn.close()
     return render_template('add_transaction.html', categories=categories)
+
+@app.route('/delete/<int:transaction_id>', methods=['POST'])
+def delete_transaction(transaction_id):
+    conn = get_db()
+    conn.execute('DELETE FROM transactions WHERE id = ?', (transaction_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('dashboard'))
+
+@app.route('/edit/<int:transaction_id>', methods=['GET', 'POST'])
+def edit_transaction(transaction_id):
+    conn = get_db()
+    if request.method == 'POST':
+        type_ = request.form['type']
+        amount = float(request.form['amount'])
+        category_id = int(request.form['category'])
+        date_str = request.form['date']
+        description = request.form.get('description', '')
+        
+        conn.execute('UPDATE transactions SET type=?, amount=?, category_id=?, date=?, description=? WHERE id=?',
+                     (type_, amount, category_id, date_str, description, transaction_id))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('dashboard'))
+    
+    transaction = conn.execute('''
+        SELECT * FROM transactions WHERE id = ?
+    ''', (transaction_id,)).fetchone()
+    
+    categories = conn.execute('SELECT * FROM categories').fetchall()
+    conn.close()
+    
+    if not transaction:
+        return redirect(url_for('dashboard'))
+    
+    return render_template('edit_transaction.html', transaction=transaction, categories=categories)
 
 @app.route('/api/chart_data')
 def chart_data():

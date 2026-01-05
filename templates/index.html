@@ -49,6 +49,39 @@
         </section>
     </div>
 
+    <!-- Card de Últimas Transações -->
+    <section class="latest-transactions-section">
+        <h2>📝 Últimas Transações</h2>
+        <div class="transactions-container">
+            {% if latest_transactions %}
+                {% for trans in latest_transactions %}
+                <div class="transaction-card {% if trans.type == 'income' %}income{% else %}expense{% endif %}">
+                    <div class="transaction-header">
+                        <span class="transaction-icon">{% if trans.type == 'income' %}📥{% else %}📤{% endif %}</span>
+                        <div class="transaction-info">
+                            <h3>{{ trans.category or 'Sem categoria' }}</h3>
+                            <p class="transaction-date">{{ trans.date }}</p>
+                            {% if trans.description %}
+                                <p class="transaction-description">{{ trans.description }}</p>
+                            {% endif %}
+                        </div>
+                        <span class="transaction-amount">R$ {{ "%.2f"|format(trans.amount) }}</span>
+                    </div>
+                    <div class="transaction-actions">
+                        <a href="/edit/{{ trans.id }}" class="btn-edit" title="Editar">✏️</a>
+                        <form method="POST" action="/delete/{{ trans.id }}" style="display:inline;">
+                            <button type="submit" class="btn-delete" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir esta transação?');">🗑️</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p style="text-align: center; color: #999;">Nenhuma transação registrada</p>
+            {% endif %}
+        </div>
+    </section>
+    </div>
+
     <script>
         // Selecionar mês
         const monthIcon = document.querySelector('.month-icon');
