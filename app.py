@@ -188,6 +188,8 @@ def chart_data():
     return jsonify({'labels': labels, 'values': values})
 
 if __name__ == '__main__':
-    debug_mode = os.getenv('FLASK_DEBUG', 'False').lower() == 'true'
+    # Em desenvolvimento local, usar debug=True para recarregar automaticamente
+    is_production = os.getenv('RENDER', False) or os.getenv('FLASK_ENV') == 'production'
+    debug_mode = not is_production
     port = int(os.getenv('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=debug_mode)
